@@ -4,6 +4,8 @@ import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -25,9 +27,12 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public User registerUser(Principal principal) {
-        return userService.createUserIfNotExists(principal.getName(), "Default Name");
+    public User registerUser(@AuthenticationPrincipal Jwt jwt) {
+        String email = jwt.getClaimAsString("email");
+        String name = jwt.getClaimAsString("name"); // This will give "Mayukh Basu"
+        return userService.createUserIfNotExists(email, name);
     }
+
 
     @GetMapping("/me")
     public User getCurrentUser(Principal principal) {

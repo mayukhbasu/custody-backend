@@ -20,13 +20,13 @@ public class UserServiceImpl implements  UserService{
   @Override
   public User createUserIfNotExists(String email, String name) {
     return userRepository.findByEmail(email).orElseGet(() -> {
-      User user = new User();
-      user.setEmail(email);
-      user.setName(name);
-      user.setRole("VIEWER");
-      user.setStatus("ACTIVE");
-      user.setCreatedDate(LocalDateTime.now());
-      return userRepository.save(user);
+        User newUser = new User();
+        newUser.setEmail(email);
+        newUser.setName(name); // now dynamic!
+        newUser.setRole("VIEWER");
+        newUser.setStatus("ACTIVE");
+        newUser.setCreatedDate(LocalDateTime.now());
+        return userRepository.save(newUser);
     });
   }
 
