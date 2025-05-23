@@ -1,8 +1,0 @@
-/Users/bubul/Desktop/Coding/custody-platform-backend/user-service/src/main/java/com/custody/userservice/Application.java
-/Users/bubul/Desktop/Coding/custody-platform-backend/user-service/src/main/java/com/custody/userservice/config/SecurityConfig.java
-/Users/bubul/Desktop/Coding/custody-platform-backend/user-service/src/main/java/com/custody/userservice/controller/UserController.java
-/Users/bubul/Desktop/Coding/custody-platform-backend/user-service/src/main/java/com/custody/userservice/dto/RoleAssignmentRequest.java
-/Users/bubul/Desktop/Coding/custody-platform-backend/user-service/src/main/java/com/custody/userservice/model/User.java
-/Users/bubul/Desktop/Coding/custody-platform-backend/user-service/src/main/java/com/custody/userservice/repository/UserRepository.java
-/Users/bubul/Desktop/Coding/custody-platform-backend/user-service/src/main/java/com/custody/userservice/service/UserService.java
-/Users/bubul/Desktop/Coding/custody-platform-backend/user-service/src/main/java/com/custody/userservice/service/UserServiceImpl.java

@@ -1,8 +1,0 @@
-com/custody/userservice/service/UserService.class
-com/custody/userservice/config/SecurityConfig.class
-com/custody/userservice/service/UserServiceImpl.class
-com/custody/userservice/repository/UserRepository.class
-com/custody/userservice/Application.class
-com/custody/userservice/controller/UserController.class
-com/custody/userservice/dto/RoleAssignmentRequest.class
-com/custody/userservice/model/User.class
