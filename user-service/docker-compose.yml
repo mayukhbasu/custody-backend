@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: custody-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: custody_db
+      POSTGRES_USER: custody_user
+      POSTGRES_PASSWORD: custody_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  user-service:
+    platform: linux/amd64
+    build:
+      context: .
+    container_name: custody-user-service
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/custody_db
+      SPRING_DATASOURCE_USERNAME: custody_user
+      SPRING_DATASOURCE_PASSWORD: custody_pass
+      SPRING_PROFILES_ACTIVE: prod
+    ports:
+      - "8087:8087"
+
+volumes:
+  postgres_data:

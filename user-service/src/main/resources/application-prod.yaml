@@ -1,6 +1,5 @@
 server:
-  port: 8087
-
+  port: ${PORT:8080}
 spring:
   datasource:
     url: jdbc:postgresql://35.192.112.201:5432/custody_db
@@ -21,3 +20,7 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: https://accounts.google.com
+
+logging:
+  level:
+    root: DEBUG
