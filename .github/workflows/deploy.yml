@@ -1,4 +1,4 @@
-name: Deploy to Google Cloud Run
+name: Deploy User Service to Google Cloud Run
 
 on:
   push:
@@ -35,11 +35,14 @@ jobs:
       - name: Configure Docker for Google Cloud
         run: gcloud auth configure-docker
 
-      - name: Build the app
-        run: mvn clean package -DskipTests
+      - name: Build the app with Maven
+        run: |
+          cd user-service
+          mvn clean package -DskipTests
 
       - name: Build and push Docker image
         run: |
+          cd user-service
           docker buildx build --platform=linux/amd64 \
             -t $IMAGE . --push
 
