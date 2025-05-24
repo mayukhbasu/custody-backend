@@ -1,0 +1,53 @@
+name: Deploy to Google Cloud Run
+
+on:
+  push:
+    branches: [main]
+
+env:
+  PROJECT_ID: custody-backend-java
+  SERVICE_NAME: user-service
+  REGION: us-central1
+  IMAGE: gcr.io/custody-backend-java/user-service
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Authenticate with Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: '${{ secrets.GCP_SA_KEY }}'
+
+      - name: Configure Docker for Google Cloud
+        run: gcloud auth configure-docker
+
+      - name: Build the app
+        run: mvn clean package -DskipTests
+
+      - name: Build and push Docker image
+        run: |
+          docker buildx build --platform=linux/amd64 \
+            -t $IMAGE . --push
+
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy $SERVICE_NAME \
+            --image $IMAGE \
+            --region $REGION \
+            --platform managed \
+            --allow-unauthenticated \
+            --set-env-vars SPRING_PROFILES_ACTIVE=prod,DB_USERNAME=${{ secrets.DB_USERNAME }},DB_PASSWORD=${{ secrets.DB_PASSWORD }},SPRING_DATASOURCE_URL=jdbc:postgresql://35.192.112.201:5432/custody_db
