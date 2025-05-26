@@ -29,7 +29,7 @@ public class UserController {
     @PostMapping
     public User registerUser(@AuthenticationPrincipal Jwt jwt) {
         String email = jwt.getClaimAsString("email");
-        String name = jwt.getClaimAsString("name"); // This will give "Mayukh Basu"
+        String name = jwt.getClaimAsString("name"); // This will give "Mayukh Basu1"
         return userService.createUserIfNotExists(email, name);
     }
 
