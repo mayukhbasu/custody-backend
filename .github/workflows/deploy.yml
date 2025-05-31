@@ -54,10 +54,4 @@ jobs:
             --region $REGION \
             --platform managed \
             --allow-unauthenticated \
-            --set-env-vars SPRING_PROFILES_ACTIVE=prod,\
-            DB_USERNAME=${{ secrets.DB_USERNAME }},\
-            DB_PASSWORD=${{ secrets.DB_PASSWORD }},\
-            SPRING_DATASOURCE_URL=jdbc:postgresql://35.192.112.201:5432/custody_db,\
-            GOOGLE_OAUTH_CLIENT_ID=${{ secrets.GOOGLE_OAUTH_CLIENT_ID }},\
-            GOOGLE_OAUTH_CLIENT_SECRET=${{ secrets.GOOGLE_OAUTH_CLIENT_SECRET }},\
-            GOOGLE_OAUTH_REDIRECT_URI=https://user-service-294043054811.us-central1.run.app/api/auth/google
+            --set-env-vars "SPRING_PROFILES_ACTIVE=prod,DB_USERNAME=${{ secrets.DB_USERNAME }},DB_PASSWORD=${{ secrets.DB_PASSWORD }},SPRING_DATASOURCE_URL=jdbc:postgresql://35.192.112.201:5432/custody_db,GOOGLE_OAUTH_CLIENT_ID=${{ secrets.GOOGLE_OAUTH_CLIENT_ID }},GOOGLE_OAUTH_CLIENT_SECRET=${{ secrets.GOOGLE_OAUTH_CLIENT_SECRET }},GOOGLE_OAUTH_REDIRECT_URI=https://user-service-294043054811.us-central1.run.app/api/auth/google"
