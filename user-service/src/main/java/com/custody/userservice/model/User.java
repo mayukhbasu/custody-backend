@@ -21,11 +21,21 @@ public class User {
 
     private String name;
     private String role; // ADMIN, OPS, VIEWER
+    private String password;
+    public String getPassword() {
+      return password;
+    }
+
+    public void setPassword(String password) {
+      this.password = password;
+    }
     private String status; // ACTIVE, INACTIVE
     private LocalDateTime createdDate;
     public Long getId() {
       return id;
     }
+    
+    
     public void setId(Long id) {
       this.id = id;
     }

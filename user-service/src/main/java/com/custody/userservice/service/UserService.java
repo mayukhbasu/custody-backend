@@ -6,7 +6,8 @@ import com.custody.userservice.dto.RoleAssignmentRequest;
 import com.custody.userservice.model.User;
 
 public interface UserService {
-    User createUserIfNotExists(String email, String name);
+    User registerUser(String email, String name, String password);
+    User authenticate(String email, String password);
     User getCurrentUser(String email);
     List<User> getAllUsers();
     void assignRole(RoleAssignmentRequest request);
