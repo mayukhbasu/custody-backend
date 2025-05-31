@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
     }
 
     return jwtUtil.generateToken(email);
-}
+    }
 
     @Override
     public User getCurrentUser(String email) {
