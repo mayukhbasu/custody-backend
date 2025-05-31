@@ -2,7 +2,10 @@ package com.custody.userservice.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
@@ -14,14 +17,17 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
-      .authorizeHttpRequests(auth -> auth
-        .anyRequest().authenticated()  // ✅ Protect ALL endpoints
-      )
-      .oauth2ResourceServer(oauth2 -> oauth2
-        .jwt(jwt -> jwt
-          .jwtAuthenticationConverter(jwtAuthenticationConverter())
-        )
-      );
+  .cors(Customizer.withDefaults()) // ✅ Enable CORS
+  .csrf(AbstractHttpConfigurer::disable)
+  .authorizeHttpRequests(auth -> auth
+    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // ✅ Preflight
+    .anyRequest().authenticated()
+  )
+  .oauth2ResourceServer(oauth2 -> oauth2
+    .jwt(jwt -> jwt
+      .jwtAuthenticationConverter(jwtAuthenticationConverter())
+    )
+  );
 
     return http.build();
   }
