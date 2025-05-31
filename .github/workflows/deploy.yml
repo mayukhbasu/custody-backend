@@ -2,7 +2,7 @@ name: Deploy User Service to Google Cloud Run
 
 on:
   push:
-    branches: [main]
+    branches: [feature/sso]
   workflow_dispatch:
 
 env:
