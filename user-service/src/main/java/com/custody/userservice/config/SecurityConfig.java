@@ -17,21 +17,19 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
-  .cors(Customizer.withDefaults()) // ✅ Enable CORS
-  .csrf(AbstractHttpConfigurer::disable)
-  .authorizeHttpRequests(auth -> auth
-    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // ✅ Preflight
-    .anyRequest().authenticated()
-  )
-  .oauth2ResourceServer(oauth2 -> oauth2
-    .jwt(jwt -> jwt
-      .jwtAuthenticationConverter(jwtAuthenticationConverter())
-    )
-  );
+      .cors(Customizer.withDefaults())
+      .csrf(AbstractHttpConfigurer::disable)
+      .authorizeHttpRequests(auth -> auth
+        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // allow CORS preflight
+        .requestMatchers("/api/auth/google").permitAll()         // ✅ allow token exchange
+        .anyRequest().authenticated()
+      )
+      .oauth2ResourceServer(oauth2 -> oauth2
+        .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter()))
+      );
 
     return http.build();
-  }
-
+}
   @Bean
   public JwtDecoder jwtDecoder() {
     // Replace with your actual JWK Set URI (e.g., from Google or Okta)
