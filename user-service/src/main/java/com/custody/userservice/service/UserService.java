@@ -7,7 +7,7 @@ import com.custody.userservice.model.User;
 
 public interface UserService {
     User registerUser(String email, String name, String password);
-    User authenticate(String email, String password);
+    String authenticate(String email, String password);
     User getCurrentUser(String email);
     List<User> getAllUsers();
     void assignRole(RoleAssignmentRequest request);

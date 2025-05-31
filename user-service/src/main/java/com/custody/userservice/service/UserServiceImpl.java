@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.custody.userservice.dto.RoleAssignmentRequest;
 import com.custody.userservice.model.User;
 import com.custody.userservice.repository.UserRepository;
+import com.custody.userservice.utils.JwtUtil;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -20,26 +21,30 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Override
-    public User registerUser(String email, String name, String password) {
-        if (userRepository.findByEmail(email).isPresent()) {
-            throw new RuntimeException("User already exists");
-        }
-        User newUser = new User();
-        newUser.setEmail(email);
-        
-        
-        return userRepository.save(newUser);
-    }
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @Override
-    public User authenticate(String email, String password) {
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
-        if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new RuntimeException("Invalid credentials");
-        }
-        return user;
+    public User registerUser(String email, String name, String password) {
+        User user = new User();
+        user.setEmail(email);
+        user.setName(name);
+        user.setPassword(passwordEncoder.encode(password)); // ✅ MUST HASH HERE
+        return userRepository.save(user);
     }
+    
+
+    @Override
+    public String authenticate(String email, String password) {
+    User userObj = userRepository.findByEmail(email)
+        .orElseThrow(() -> new RuntimeException("User not found"));
+
+    if (!passwordEncoder.matches(password, userObj.getPassword())) {
+        throw new RuntimeException("Invalid credentials");
+    }
+
+    return jwtUtil.generateToken(email);
+}
 
     @Override
     public User getCurrentUser(String email) {

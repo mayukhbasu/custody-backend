@@ -22,6 +22,7 @@ public class User {
     private String name;
     private String role; // ADMIN, OPS, VIEWER
     private String password;
+    
     public String getPassword() {
       return password;
     }
