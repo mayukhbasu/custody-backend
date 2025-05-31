@@ -21,3 +21,9 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: https://accounts.google.com
+
+google:
+  oauth:
+    client-id:  ${GOOGLE_OAUTH_CLIENT_ID}
+    client-secret: ${GOOGLE_OAUTH_CLIENT_SECRET}
+    redirect-uri: http://localhost:8087/api/auth/google
