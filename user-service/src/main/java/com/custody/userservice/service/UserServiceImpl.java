@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.custody.userservice.dto.RoleAssignmentRequest;
 import com.custody.userservice.model.User;
+import com.custody.userservice.model.UserRole;
 import com.custody.userservice.repository.UserRepository;
 import com.custody.userservice.utils.JwtUtil;
 
@@ -33,6 +34,7 @@ public class UserServiceImpl implements UserService {
         user.setEmail(email);
         user.setName(name);
         user.setPassword(passwordEncoder.encode(password));
+        user.setRole(UserRole.VIEWER);
         auditService.log("REGISTRATION_SUCCESS", email, "Successful registration");
         return userRepository.save(user);
     }

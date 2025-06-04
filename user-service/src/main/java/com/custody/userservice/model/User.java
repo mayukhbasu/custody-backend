@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -20,7 +22,9 @@ public class User {
     private String email;
 
     private String name;
-    private String role; // ADMIN, OPS, VIEWER
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private UserRole role;
     private String password;
     
     public String getPassword() {
@@ -52,11 +56,12 @@ public class User {
     public void setName(String name) {
       this.name = name;
     }
-    public String getRole() {
+    public UserRole getRole() {
       return role;
     }
-    public void setRole(String role) {
-      this.role = role;
+  
+    public void setRole(UserRole role) {
+        this.role = role;
     }
     public String getStatus() {
       return status;
