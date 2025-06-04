@@ -1,10 +1,8 @@
 package com.custody.userservice.dto;
 
-import com.custody.userservice.model.UserRole;
-
 public class RoleAssignmentRequest {
   private String email;
-  private UserRole role;
+  private String role;
 
   public String getEmail() {
     return email;
@@ -14,11 +12,11 @@ public class RoleAssignmentRequest {
     this.email = email;
   }
 
-  public UserRole getRole() {
+  public String getRole() {
     return role;
   }
 
-  public void setRole(UserRole role) {
+  public void setRole(String role) {
     this.role = role;
   }
 }

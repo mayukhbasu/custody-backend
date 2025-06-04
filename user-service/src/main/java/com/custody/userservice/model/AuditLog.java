@@ -17,16 +17,15 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Builder(toBuilder = true) // Optional but safer
 public class AuditLog {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String action; // e.g. "LOGIN_SUCCESS", "REGISTER", etc.
-    private String email;  // user email or system actor
-    private String details; // extra data like IP or role assigned
-
+    private String action;
+    private String email;
+    private String details;
     private LocalDateTime timestamp;
 }

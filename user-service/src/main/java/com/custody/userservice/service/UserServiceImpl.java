@@ -1,15 +1,17 @@
 package com.custody.userservice.service;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.custody.userservice.dto.RoleAssignmentRequest;
 import com.custody.userservice.model.User;
-import com.custody.userservice.model.UserRole;
 import com.custody.userservice.repository.UserRepository;
 import com.custody.userservice.utils.JwtUtil;
 
@@ -28,16 +30,42 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private AuditService auditService; // ✅ This is needed
 
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
     @Override
     public User registerUser(String email, String name, String password) {
-        User user = new User();
-        user.setEmail(email);
-        user.setName(name);
-        user.setPassword(passwordEncoder.encode(password));
-        user.setRole(UserRole.VIEWER);
-        auditService.log("REGISTRATION_SUCCESS", email, "Successful registration");
-        return userRepository.save(user);
+        logger.info("Registering user with email: {}", email);
+
+        try {
+            if (email == null || name == null || password == null) {
+                logger.error("Missing required fields - email: {}, name: {}, password: {}", email, name, password != null ? "***" : null);
+                throw new IllegalArgumentException("Email, name, and password must not be null");
+            }
+
+            if (userRepository.findByEmail(email).isPresent()) {
+                logger.warn("User already exists with email: {}", email);
+                throw new RuntimeException("User already exists");
+            }
+
+            User user = new User();
+            user.setEmail(email);
+            user.setName(name);
+            user.setPassword(passwordEncoder.encode(password));
+            user.setRole("VIEWER");
+            user.setStatus("ACTIVE");
+            user.setCreatedDate(LocalDateTime.now());
+
+            User savedUser = userRepository.save(user);
+            logger.info("User registered successfully with ID: {}", savedUser.getId());
+
+            auditService.log("REGISTRATION_SUCCESS", email, "Successful registration");
+            return savedUser;
+
+        } catch (Exception e) {
+            logger.error("Error occurred while registering user with email: {}", email, e);
+            throw e;
+        }
     }
+
     
 
     @Override
