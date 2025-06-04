@@ -24,12 +24,16 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private JwtUtil jwtUtil;
 
+    @Autowired
+    private AuditService auditService; // ✅ This is needed
+
     @Override
     public User registerUser(String email, String name, String password) {
         User user = new User();
         user.setEmail(email);
         user.setName(name);
-        user.setPassword(passwordEncoder.encode(password)); // ✅ MUST HASH HERE
+        user.setPassword(passwordEncoder.encode(password));
+        auditService.log("REGISTRATION_SUCCESS", email, "Successful registration");
         return userRepository.save(user);
     }
     
@@ -40,9 +44,10 @@ public class UserServiceImpl implements UserService {
         .orElseThrow(() -> new RuntimeException("User not found"));
 
     if (!passwordEncoder.matches(password, userObj.getPassword())) {
+        auditService.log("LOGIN_FAILED", email, "Incorrect password");
         throw new RuntimeException("Invalid credentials");
     }
-
+    auditService.log("LOGIN_SUCCESS", email, "Successful login");
     return jwtUtil.generateToken(email);
     }
 
