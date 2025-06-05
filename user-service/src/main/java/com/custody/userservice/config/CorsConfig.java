@@ -13,7 +13,11 @@ public class CorsConfig {
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:4200")); // 👈 or your frontend prod URL
+        config.setAllowedOriginPatterns(List.of(
+        	    "http://localhost:4200",
+        	    "http://localhost:4201",
+        	    "http://localhost:4202"
+        ));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true); // if sending cookies or auth headers

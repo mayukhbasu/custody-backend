@@ -90,6 +90,10 @@ public class UserServiceImpl implements UserService {
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
+    
+    public List<User> searchUsers(String keyword) {
+        return userRepository.findByNameContainingIgnoreCaseOrEmailContainingIgnoreCase(keyword, keyword);
+    }
 
     @Override
     public void assignRole(RoleAssignmentRequest request) {

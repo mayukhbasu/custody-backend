@@ -15,12 +15,11 @@ public class AuditService {
     private AuditLogRepository auditLogRepository;
 
     public void log(String action, String email, String details) {
-        AuditLog log = AuditLog.builder()
-                .action(action)
-                .email(email)
-                .details(details)
-                .timestamp(LocalDateTime.now())
-                .build();
+        AuditLog log = new AuditLog();
+        log.setAction(action);
+        log.setEmail(email);
+        log.setDetails(details);
+        log.setTimestamp(LocalDateTime.now());
 
         auditLogRepository.save(log);
     }
